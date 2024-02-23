@@ -1,0 +1,1 @@
+Python -m PyQt5.uic.pyuic -x arayuz.ui -o dosyaadi.py
