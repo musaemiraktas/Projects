@@ -1,0 +1,147 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'sans-serif';
+
+}
+
+body{
+    background-color: #e5dad8;
+}
+
+.hero{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+}
+
+nav{
+    width: 100%;
+    display:flex;
+    align-items: center;
+    justify-content:space-between;
+    background-color: #767fa7;
+    background-size: 100vh;
+    z-index: -1;
+}
+
+nav .logo{
+    width: 250px;
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 5px;
+    margin-top: 7px;
+    z-index: 3;
+}
+
+nav ul{
+    flex: 1;
+    text-align: right;
+    margin-right: 50px;
+}
+
+nav ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 10px 30px;
+}
+
+nav ul li .btn-home{
+    text-decoration:none;
+    color: black;
+    background-color: transparent;
+    border: transparent;
+    font-weight: 700;
+    position: relative;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+nav ul li .btn-home::before {
+    content: '';
+    width: 100%;
+    height: 100px;
+    background: #a10a0a; /* veya #daa972 */
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: -35px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+    transition: height 0.5s, bottom 0.5s;
+}
+
+nav ul li .btn-home:hover::before{
+    height: 0px;
+}
+.warning{
+    color: #a10a0a;
+    margin-top: 180px;
+}
+
+.search-container{
+    text-align: center;
+    /*margin: auto;*/
+    width: 100%;
+    /*height: 300px;*/
+    margin-top: 80px;
+    /*margin-bottom: -75px;*/
+}
+
+.search-label-container {
+    text-align: center;  
+    margin-top: 100px;  
+}
+
+.search-label {
+    font-size: 45px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: #a10a0a;
+}
+
+.search-container .search_box{
+    width: 40%;
+    height: 50px;
+    margin-top: 15px;
+    font-size: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background-color: whitesmoke;
+}
+
+.search-container .btn-search{
+    width: 100px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: whitesmoke;
+    color: #767fa7;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-search:hover{
+    background-color: #767fa7;
+    color: whitesmoke;
+}
+
+.button-container{
+    text-align: center;
+    margin-top: 13px;
+}
+
+.alert alert-info{
+    margin-left: 10px;
+}
+
+
+
