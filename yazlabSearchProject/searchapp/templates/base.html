@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | Academiac</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+    {% block css_files %}{% endblock %}
+</head>
+<body>
+    <div class="hero">
+        <nav>
+            <img src="{% static 'img/logo1.png' %}" class="logo">
+            <ul>
+                <li>
+                    <form action="{% url 'home' %}" method="get">
+                    <button type="submit" class="btn-home">ANA<br>SAYFA</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+        
+        {% block search_box %}
+            <div class="search-container">
+                <form action="{% url 'search' %}" method="get">
+                    <div class="search-label-container">
+                        <label for="search_box" class="search-label">ACADEMIAC</label>
+                    </div>
+                    <input type="text" id="search_box" class="search_box" name="aranan" required>
+                    <div class="button-container">
+                        <button type="submit" class="btn-search">ARA</button>
+                    </div>
+                </form>
+            </div>
+        {% endblock %}
+        
+        
+        
+        
+    
+
+        {% block content %}{% endblock %}
+        <p class="warning">UYARI: Sistemimiz dergipark.org.tr dışından alınan verilerde stabil çalışmayabilir.</p>
+    </div>
+    
+</body>
+</html>

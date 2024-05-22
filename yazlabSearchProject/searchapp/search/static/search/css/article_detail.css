@@ -1,0 +1,20 @@
+.h1-title{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.custom-hr{
+    background-color: #a10a0a;
+    border: none; 
+    height: 2px; 
+    margin: 20px 0;
+}
+
+p{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.title-heading{
+    color: #a10a0a;
+}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Details{% endblock %}
+
+{% block css_files %}<link rel="stylesheet" href="{% static 'search/css/article_detail.css' %}">{% endblock %}
+
+
+
+{% block search_box %}{% endblock %}
+
+
+
+{% block content %}
+    <div>
+        <h1 class="h1-title">{{ article.title }}</h1>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Yazar:</span> {{ article.authors }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Yayın Türü:</span> {{ article.section }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Yayıncı:</span> {{ article.publisher }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Yayın Tarihi:</span> {{ article.pub_date }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Anahtar Kelimeler:</span> {{ article.keywords }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Özet:</span> {{ article.abstract }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Referanslar:</span> {{ article.citations }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">Alıntı Sayısı:</span> {{ article.cit_num }}</p>
+        <hr class="custom-hr">
+        <p><span class="title-heading">DOI Numarası:</span> {{ article.doi_num }}</p>
+        <hr class="custom-hr">
+        {% if link in article %}
+            <p><span class="title-heading">İncele:</span> <a href="{{ article.link }}" target="_blank">Link</a></p>
+        {% endif %}
+    </div>
+    
+
+{% endblock %}

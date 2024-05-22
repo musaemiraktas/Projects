@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Search{% endblock %}
+
+{% block css_files %}<link rel="stylesheet" href="{% static 'search/css/search_results.css' %}">{% endblock %}
+
+{% block search_box %}
+    <div class="search-container">
+        <form action="{% url 'search' %}" method="get">
+            <input type="text" id="search_box" class="search_box" name="aranan" required>
+            <button type="submit" class="btn-search">ARA</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    {% if query %}
+
+        {% if query_corrected %}
+            <div class="alert alert-info" role="alert">
+                {{ query_true }}
+            </div>
+        {% endif %}
+
+        <h2 class="results-query">Arama Sonuçları: {{ query }}</h2>
+        <div class="table-responsive">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Makale</th>
+                        <th>Yazar</th>
+                        <th>Yayın Türü</th>
+                        <th>Yayıncı</th>
+                        <th>Yayın Tarihi</th>
+                        <th>Anahtar Kelimeler</th>
+                        <th>Özet</th>
+                        <th>Referanslar</th>
+                        <th>Alıntı Sayısı</th>
+                        <th>DOI Numarası</th>
+                        <th>İncele</th>
+                        <th>İndir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'article_detail' title=result.title|urlencode %}" target="_blank" class="title">{{ result.title }}</a>
+                            </td>
+                            <td>{{ result.authors }}</td>
+                            <td>{{ result.section }}</td>
+                            <td>{{ result.publisher }}</td>
+                            <td>{{ result.pub_date }}</td>
+                            <td>{{ result.keywords }}</td>
+                            <td>{{ result.abstract|truncatewords:20 }}</td>
+                            <td>{{ result.citations|truncatewords:20 }}</td>
+                            <td>{{ result.cit_num }}</td>
+                            <td>{{ result.doi_num }}</td>
+                            <td>
+                                {% if result.link %}
+                                    <a href="{{ result.link }}" target="_blank" class="view">Link</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if result.link %}
+                                    <a href="{% url 'download_pdf' path_to_pdf=result.link title=result.title %}" class="download">PDF</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    {% endif %}
+    
+{% endblock %}
