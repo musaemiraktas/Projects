@@ -1,0 +1,535 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <SevSeg.h>
+
+SevSeg sevseg; // SevSeg nesnesi oluştur
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+const int potPin = A0;
+#define OLED_ADDR   0x3C
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+#define LDR_PIN 1
+// Sektirme potasının boyutları
+int paddleWidth = 30;
+int paddleHeight = 3;
+// Sektirme potasının başlangıç konumu
+int potValue = analogRead(potPin);
+int paddleX = map(potValue, 0, 1023, 0, SCREEN_WIDTH - paddleWidth);
+int paddleY = SCREEN_HEIGHT - paddleHeight; // Ekranın altından biraz yukarıda
+
+
+
+
+
+double ballSpeedX = 2;
+double ballSpeedY = -2;
+int ballSize = 2;
+int ballFallCount = 0; // Topun yere düşme sayısını tutacak değişken
+int paddleLives = 3; // Paddle için can sayısı
+// Topu paddle'ın hemen üstüne yerleştir
+double  ballX = paddleX + paddleWidth / 2;
+double  ballY = paddleY - ballSize - 3;
+
+
+const int buttonNextPin = 14; // Menüde sonraki seçeneğe geçmek için kullanılacak düğme
+const int buttonSelectPin = 15;
+int menuState = 0;
+
+// Tuğla parametreleri
+int brickWidth = 10;
+int brickHeight = 5;
+int padding = 2;
+int bricksInRow = 6;
+int bricksInColumn = 3;
+int startY = 0;
+int startX = (SCREEN_WIDTH / 2) - ((bricksInRow / 2) * brickWidth) - 5;
+
+// 2 haneli 7 segment display için sayaçlar
+int counterTens = 0; // Onlar basamağı için sayaç
+int counterOnes = 0; // Birler basamağı için sayaç
+int counterThousands = 0; // Binler basamağı için sayaç
+int counterHundreds = 0;
+int level = 1;
+// Tuğla matrisi
+bool bricks[4][12]; // Tuğla matrisini burada tanımlayın
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(buttonNextPin, INPUT_PULLUP);
+  pinMode(buttonSelectPin, INPUT_PULLUP);
+  pinMode(22, OUTPUT);
+  pinMode(24, OUTPUT);
+  pinMode(26, OUTPUT);
+
+
+  byte numDigits = 4;
+  byte digitPins[] = {2, 3, 4, 5};
+  byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13};
+  bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
+  byte hardwareConfig = COMMON_ANODE; // See README.md for options
+  bool updateWithDelays = false; // Default 'false' is Recommended
+  bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
+  bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected
+
+  sevseg.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
+               updateWithDelays, leadingZeros, disableDecPoint);
+  sevseg.setBrightness(90);
+  sevseg.refreshDisplay();
+
+
+
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR)) {
+    Serial.println(F("SSD1306 bağlantı hatası"));
+    for (;;);
+  }
+  display.clearDisplay();
+  initializeBricks();
+  // Tuğla matrisini başlangıçta doldur
+  for (int i = 0; i < bricksInColumn; i++) {
+    for (int j = 0; j < bricksInRow; j++) {
+      bricks[i][j] = true;
+    }
+  }
+}
+
+
+unsigned long previousMillis = 0; // En son display güncellemesinden bu yana geçen süre
+const long interval = 100; // Display güncellemeleri arasındaki süre (milisaniye)
+
+void loop() {
+  digitalWrite(22, HIGH);
+  digitalWrite(24, HIGH);
+  digitalWrite(26, HIGH);
+  if (digitalRead(LDR_PIN) == LOW) {
+    display.invertDisplay(true);
+  } else {
+    display.invertDisplay(false);
+  }
+  showMenu(); // Menüyü göster
+  if (digitalRead(buttonSelectPin) == LOW) { // Seçim düğmesine basıldığında
+    if (menuState == 0) { // Oyunu Başlat seçeneği seçildiyse
+      gameReset();
+      Game(); // Oyun fonksiyonunu çağır
+    } else if (menuState == 1) { // Çıkış seçeneği seçildiyse
+      display.clearDisplay();
+      display.setTextSize(1);
+      display.setTextColor(SSD1306_WHITE);
+      display.setCursor(10, 25);
+      display.print("Tesekkurler");
+      display.display();
+      delay(5000);
+      display.clearDisplay();
+      display.display();
+      // Burada Arduino'nun RESET pinine bağlı bir çıkış kullanarak Arduino'yu resetlemeyi düşünebilirsiniz.
+      // Örneğin: digitalWrite(resetPin, LOW);
+    }
+  }
+  // Oyunun ana döngüsünde
+}
+// Sayaçları güncelle
+void updateCounters() {
+  counterOnes++; // Birler basamağını artır
+  if (counterOnes > 9) {
+    counterOnes = 0; // Birler basamağını sıfırla
+    counterTens++; // Onlar basamağını artır
+    if (counterTens > 9) {
+      counterTens = 0; // Onlar basamağını sıfırla
+      counterHundreds++; // Yüzler basamağını artır
+      if (counterHundreds > 9) {
+        counterHundreds = 0; // Yüzler basamağını sıfırla
+        counterThousands++; // Binler basamağını artır
+        if (counterThousands > 9) {
+          // Eğer binler basamağı da 9'dan büyükse, oyun sıfırlama veya başka bir işlem yapabilirsiniz
+          // Örneğin tüm sayaçları sıfırlayabilirsiniz
+          counterThousands = 0;
+          counterHundreds = 0;
+          counterTens = 0;
+          counterOnes = 0;
+        }
+      }
+    }
+  }
+}
+void initializeBricks() {
+  for (int i = 0; i < bricksInColumn; i++) {
+    for (int j = 0; j < bricksInRow; j++) {
+      bricks[i][j] = true; // Tüm tuğlaları aktif et
+    }
+  }
+}
+
+void initializeTriangleBricks() {
+  bricksInRow = 10;
+  startY = 0;
+  startX = (SCREEN_WIDTH / 2) - ((bricksInRow / 2) * brickWidth) - 5;
+  int center = bricksInRow / 2; // Tuğlaların merkez noktasını bul
+  for (int i = 0; i < bricksInColumn; i++) {
+    int bricksInThisRow = bricksInRow - i * 2; // Her satırdaki tuğla sayısı
+    for (int j = 0; j < bricksInRow; j++) {
+      if (j >= center - bricksInThisRow / 2 && j < center + (bricksInThisRow + 1) / 2) {
+        bricks[i][j] = true; // Tuğlayı aktif et
+      } else {
+        bricks[i][j] = false; // Tuğlayı devre dışı bırak
+      }
+    }
+  }
+}
+struct PowerUp {
+  int x, y; // Power-Up'ın konumu
+  bool active; // Power-Up'ın aktif olup olmadığı
+
+  PowerUp() : x(0), y(0), active(false) {} // Yapıcı metot, varsayılan değerler ile başlatır
+
+  void activate(int nx, int ny) { // Power-Up'ı aktif hale getirir
+    x = nx;
+    y = ny;
+    active = true;
+  }
+  void deActivate() { // Power-Up'ı aktif hale getirir
+
+    active = false;
+  }
+
+  void move() { // Power-Up'ı hareket ettirir
+    if (active) {
+      y += 1; // Yatayda sabit, dikeyde aşağı doğru hareket
+      if (y > SCREEN_HEIGHT) {
+        active = false; // Ekrandan çıkarsa, aktifliğini kaldır
+      }
+    }
+  }
+
+  void draw(Adafruit_SSD1306 &disp) { // Power-Up'ı ekranda çizer
+    if (active) {
+      // Kalp için üst kısmında iki yuvarlak ve altında bir üçgen çiz
+      disp.fillCircle(x - 3, y, 3, SSD1306_WHITE); // Sol yuvarlak
+      disp.fillCircle(x + 3, y, 3, SSD1306_WHITE); // Sağ yuvarlak
+      disp.fillTriangle(x - 6, y, x, y + 5, x + 6, y, SSD1306_WHITE); // Alt üçgen
+    }
+  }
+};
+PowerUp powerUps[5];
+void Game() {
+  while (1)
+  {
+    sevseg.refreshDisplay();
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - previousMillis >= interval) {
+      // Display'i güncelle
+      previousMillis = currentMillis; // Son güncelleme zamanını güncelle
+
+
+    }
+    potValue = analogRead(potPin);
+    paddleX = map(potValue, 0, 1023, 0, SCREEN_WIDTH - paddleWidth);
+
+    display.clearDisplay();
+
+    bool allBricksCleared = true;
+    for (int i = 0; i < bricksInColumn; i++) {
+      for (int j = 0; j < bricksInRow; j++) {
+        if (bricks[i][j]) {
+          allBricksCleared = false; // En az bir tuğla hala duruyor
+          // (Tuğla çarpışma kontrolü burada devam eder...)
+        }
+      }
+    }
+    if (digitalRead(LDR_PIN) == LOW) {
+      display.invertDisplay(true);
+    } else {
+      display.invertDisplay(false);
+    }
+
+    if (allBricksCleared) {
+      for (int k = 0; k < 5; k++) {
+        powerUps[k].deActivate();
+      }
+      if (level == 1)
+      {
+        for (int i = 5; i > 0; i--) {
+
+          // 5'ten 1'e geri sayım
+          display.clearDisplay(); // Ekranı temizle
+          display.setTextSize(1); // Metin boyutunu ayarla
+          display.setTextColor(SSD1306_WHITE); // Metin rengini ayarla
+          display.setCursor(15, 13); // İmleci başlangıç noktasına ayarla
+          display.print(F("2. seviyeye... "));
+          display.println(i); // Geri sayım metnini yazdır
+          display.display(); // Değişiklikleri ekrana yansıt
+          delay(1000); // 1 saniye bekle
+          sevseg.refreshDisplay();
+        }
+        level = 2; // İkinci seviyeye geç
+        initializeTriangleBricks(); // Tuğlaları üçgen şeklinde düzenle
+        ballX = paddleX + paddleWidth / 2;
+        ballY = paddleY - ballSize - 3;
+        ballSpeedX = ballSpeedX * 1.2;
+        ballSpeedY = ballSpeedY * 1.2;
+      }
+      else if (level == 2)
+      {
+        endGameScreen(true);
+        break;
+      }
+    }
+
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+
+
+    // Sağ veya sol duvara çarpma kontrolü
+    if (ballX <= 0 || ballX >= SCREEN_WIDTH - ballSize) {
+      ballSpeedX = -ballSpeedX; // X yönünü ters çevir
+    }
+    // Üst duvara çarpma kontrolü
+    if (ballY <= 0) {
+      ballSpeedY = -ballSpeedY; // Y yönünü ters çevir
+    }
+    // Paddle'a çarpma kontrolü
+    if (ballY >= paddleY - ballSize + 1  && ballX >= paddleX && ballX <= paddleX + paddleWidth) {
+      ballSpeedY = -ballSpeedY; // Y yönünü ters çevir
+    }
+    // Alt duvara değme kontrolü
+    if (paddleLives < 3) {
+      digitalWrite(26, LOW); // 3. can gittiğinde 26 numaralı pini söndür
+    }
+    if (paddleLives < 2) {
+      digitalWrite(24, LOW); // 2. can gittiğinde 24 numaralı pini söndür
+    }
+    if (ballY >= SCREEN_HEIGHT - ballSize + 3 ) {
+      ballX = paddleX + paddleWidth / 2;
+      ballY = paddleY - ballSize - 3;
+      paddleLives--; // Canı azalt
+
+      if (paddleLives <= 0) {
+        if (paddleLives < 1) {
+          digitalWrite(22, LOW); // Son can gittiğinde 22 numaralı pini söndür
+        }
+        // Game Over durumu
+        display.clearDisplay();
+        display.setTextSize(1);
+        display.setTextColor(SSD1306_WHITE);
+        display.setCursor(15, 13);
+        endGameScreen(false);
+
+
+
+        display.display();
+        int sayac = 0;
+        while (sayac <= 5000)
+        {
+
+          sevseg.refreshDisplay();
+          delay(1);
+          sayac++;
+        }
+
+        break;
+
+      }
+    }
+
+
+    // Tuğlaları çiz
+    for (int i = 0; i < bricksInColumn; i++) {
+      for (int j = 0; j < bricksInRow; j++) {
+        if (bricks[i][j]) {
+          int brickX = startX + j * (brickWidth + padding);
+          int brickY = startY + i * (brickHeight + padding);
+          display.fillRect(brickX, brickY, brickWidth, brickHeight, SSD1306_WHITE);
+        }
+      }
+    }
+    for (int k = 0; k < 5; k++) {
+      powerUps[k].move(); // Power-Up'ı hareket ettir
+      powerUps[k].draw(display); // Power-Up'ı çiz
+    }
+    // Oyunun ana döngüsünde, Power-Up çizimden sonra
+    for (int k = 0; k < 5; k++) {
+      if (powerUps[k].active && powerUps[k].y >= paddleY - 10 && powerUps[k].x >= paddleX && powerUps[k].x <= paddleX + paddleWidth) {
+        powerUps[k].active = false;
+        if (paddleLives < 3)
+        {
+          paddleLives++;
+
+          if (paddleLives == 1) {
+            digitalWrite(22, HIGH);
+            digitalWrite(24, LOW);
+            digitalWrite(26, LOW);
+
+          }
+          else if (paddleLives == 2) {
+            digitalWrite(22, HIGH);
+            digitalWrite(24, HIGH);
+            digitalWrite(26, LOW);
+          }
+          else if (paddleLives == 3) {
+            digitalWrite(22, HIGH);
+            digitalWrite(24, HIGH);
+            digitalWrite(26, HIGH);
+          }
+
+          // Power-Up'ı devre dışı bırak
+          // Paddle'ın canını artır
+        }
+      }
+    }
+    // Tuğla çarpışma kontrolü
+    for (int i = 0; i < bricksInColumn; i++) {
+      for (int j = 0; j < bricksInRow; j++) {
+        if (bricks[i][j]) {
+          int brickX = startX + j * (brickWidth + padding);
+          int brickY = startY + i * (brickHeight + padding);
+          // Tuğlaya çarpma kontrolü
+          if (ballY <= brickY + brickHeight && ballY >= brickY - ballSize &&
+              ballX >= brickX && ballX <= brickX + brickWidth) {
+            ballSpeedY = -ballSpeedY; // Topun yönünü ters çevir
+            bricks[i][j] = false;
+
+            if (random(0, 5) == 0) { // %20 şans ile
+              for (int k = 0; k < 5; k++) {
+                if (!powerUps[k].active) {
+                  powerUps[k].activate(brickX + brickWidth / 2, brickY + brickHeight / 2);
+                  break; // Boş bir Power-Up bulunduğunda döngüden çık
+                }
+              }
+            }
+            // Tuğlayı kır
+            // Sayaçları güncelle
+            updateCounters();
+
+
+          }
+        }
+        sevseg.setNumber(counterThousands * 1000 + counterHundreds * 100 + counterTens * 10 + counterOnes, 0);
+        sevseg.refreshDisplay();
+      }
+    }
+
+
+    // 7 segment display'de sayaçları göster
+
+    display.fillRect(paddleX, paddleY, paddleWidth, paddleHeight, SSD1306_WHITE); // Yeni pozisyonda sektirme potasını çiz
+    display.fillCircle(ballX, ballY, ballSize, SSD1306_WHITE); // Topu çiz
+    display.display(); // Değişiklikleri ekrana yansıt,
+    // Küçük bir gecikme ekle**********************************************************
+
+    sevseg.refreshDisplay();
+  }
+}
+
+
+
+
+
+// Power-Up nesnelerini saklayacak dizi
+// Maksimum 5 Power-Up saklayabiliyoruz
+
+
+void showMenu() {
+  if (digitalRead(buttonNextPin) == LOW) { // Sonraki düğmesine basıldığında
+    menuState = (menuState + 1) % 2; // Sonraki menü seçeneğine geç
+    delay(200); // Debounce için beklet
+  }
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+
+  if (menuState == 0) {
+    display.setCursor(0, 0);
+    display.println("1. Oyunu Baslat <-");
+    display.setCursor(0, 10);
+    display.println("2. Cikis");
+  } else if (menuState == 1) {
+    display.setCursor(0, 0);
+    display.println("1. Oyunu Baslat");
+    display.setCursor(0, 10);
+    display.println("2. Cikis <-"); // Seçili menü seçeneğini işaretle
+  }
+
+  display.display();
+}
+void gameReset() {
+  // Sektirme potasının başlangıç konumunu sıfırla
+  level = 1;
+
+  for (int k = 0; k < 5; k++) {
+    powerUps[k].deActivate();
+  }
+  bricksInRow = 6;
+  bricksInColumn = 3;
+
+
+
+  potValue = analogRead(potPin);
+  paddleX = map(potValue, 0, 1023, 0, SCREEN_WIDTH - paddleWidth);
+  paddleY = SCREEN_HEIGHT - paddleHeight; // Ekranın altından biraz yukarıda
+
+  // Topun başlangıç konumunu ve hızını sıfırla
+  ballX = paddleX + paddleWidth / 2;
+  ballY = paddleY - ballSize - 3;
+  ballSpeedX = 1.5;
+  ballSpeedY = 1.5;
+
+  // Oyuncunun canlarını sıfırla
+  paddleLives = 3;
+
+  // Tuğla matrisini tekrar doldur
+  for (int i = 0; i < bricksInColumn; i++) {
+    for (int j = 0; j < bricksInRow; j++) {
+      bricks[i][j] = true;
+    }
+  }
+
+  // Sayaçları sıfırla
+  counterThousands = 0;
+  counterHundreds = 0;
+  counterTens = 0;
+  counterOnes = 0;
+
+  // Eğer menü sistemi varsa, menü durumunu başlangıç durumuna getir (örneğin, oyun başlatma seçeneğine)
+  menuState = 0;
+
+  // Oyunu yeniden başlatmadan önce ekranı temizle
+  display.clearDisplay();
+  display.display();
+}
+
+void endGameScreen(bool won) {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+
+  if (won) {
+    display.setCursor(0, 0);
+    display.print("Skor: ");
+    display.print(counterTens);
+    display.print(counterOnes);
+
+    display.setCursor(0, 10);
+    display.println("Tebrikler,");
+    display.setCursor(0, 20);
+    display.println("kazandiniz!");
+  } else {
+    display.setCursor(0, 0);
+    display.println("Kaybettin :(");
+
+    display.setCursor(0, 10);
+    display.print("Skor: ");
+    display.print(counterTens);
+    display.print(counterOnes);
+  }
+
+  display.display();
+  delay(5000); // 5 saniye beklet
+
+  // Burada oyunu sıfırlamak veya başka bir ekran göstermek isteyebilirsiniz.
+  gameReset(); // Oyunu başa döndür
+}
