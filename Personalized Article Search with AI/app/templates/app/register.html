@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app/css/register.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Register</title>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <div class="logo">
+                <img src="{% static 'app/img/logo2.png' %}" alt="logo">
+            </div>
+            <h3>REGISTER</h3>
+            <div class="inputs">
+                <div class="input-box">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" placeholder="Password" required>
+                    <i class='bx bx-key'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="first_name" placeholder="First Name" required>
+                    <i class='bx bxs-chevron-left'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="last_name" placeholder="Last Name" required>
+                    <i class='bx bxs-chevrons-left'></i>
+                </div>
+                <div class="input-box">
+                    <input type="date" id="birth_date" name="birth_date" placeholder="Birth Date" required>
+
+                    <i class='bx bx-calendar-heart custom-date-icon'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="birth_place" placeholder="Birth Place" required>
+                    <i class='bx bx-world'></i>
+                </div>
+                <div class="gender-form">
+                    <fieldset>
+                        <legend>Gender:</legend>
+                        <label>
+                            <input type="radio" name="gender" value="Male" required> Male
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="Female"> Female
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="Other"> Other
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="input-box">
+                    <textarea name="interests" placeholder="Interests"></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+
+        </form>
+    </div>
+
+    <div id="messages" style="display: none;">
+        {% for message in messages %}
+        <span>{{ message }}</span>
+        {% endfor %}
+    </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var messageContainer = document.getElementById('messages');
+            var messageElements = messageContainer.getElementsByTagName('span');
+            var messages = Array.from(messageElements).map(function (element) {
+                return element.textContent || element.innerText;
+            });
+
+            messages.forEach(function (message) {
+                alert(message);
+            });
+
+            // Flatpickr ile tarih seçici başlat
+            flatpickr("#birth_date", {});
+
+            document.querySelector('.custom-date-icon').addEventListener('click', function () {
+                var birthDateInput = document.getElementById('birth_date');
+                birthDateInput.focus();
+                birthDateInput.click();
+            });
+        }
+    </script>
+
+
+</body>
+
+</html>

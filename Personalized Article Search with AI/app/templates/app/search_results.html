@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app/css/search_results.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Search Results</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <img src="{% static 'app/img/logo2.png' %}" alt="logo" class="logo">
+            <div class="profile-btn-container">
+                <form action="{% url 'user_profile' %}" method="get">
+                    <input type="hidden" name="username" value="{{ username }}">
+                    <button type="submit" class="profile-btn no-style-btn"><i class='bx bxs-user-circle'></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="search-box-btn">
+        <form action="{% url 'search_articles' %}" method="post" class="search-form">
+            {% csrf_token %}
+            <input type="hidden" name="username" value="{{ username }}">
+            <input type="text" class="search-box" name="search_query" placeholder="Search articles..." required>
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+
+
+    <div class="wrapper2">
+        <div class="articles-section">
+            <h2>FastText Results</h2>
+            {% if fasttext_articles %}
+            <ul>
+                {% for filename, info in fasttext_articles.items %}
+                <li>
+                    <a href="{% url 'view_article' filename=info.filename %}">{{ info.title }} - {{ info.similarity_score }}</a>
+                    <button type="button"
+                        onclick="addKeywordsToInterests('{{ info.filename }}', '{{ info.username }}', 'fasttext')">&#10003;</button>
+                    <button type="button"
+                        onclick="ejectKeywordsToInterests('{{ info.filename }}', '{{ info.username }}', 'fasttext')">&#10007;</button>
+                    <!-- Çarpı -->
+                </li>
+                {% endfor %}
+                <p>FastText Precision: {{ fasttext_precision }}</p>
+            </ul>
+            {% else %}
+            <p>No FastText articles found matching your search criteria.</p>
+            {% endif %}
+
+            <h2>SciBERT Results</h2>
+            {% if scibert_articles %}
+            <ul>
+                {% for filename, info in scibert_articles.items %}
+                <li>
+                    <a href="{% url 'view_article' filename=info.filename %}">{{ info.title }} - {{ info.similarity_score }}</a>
+                    <button type="button"
+                        onclick="addKeywordsToInterests('{{ info.filename }}', '{{ info.username }}', 'scibert')">&#10003;</button>
+                    <button type="button"
+                        onclick="ejectKeywordsToInterests('{{ info.filename }}', '{{ info.username }}', 'scibert')">&#10007;</button>
+                    <!-- Çarpı -->
+                </li>
+                {% endfor %}
+                <p>SciBERT Precision: {{ scibert_precision }}</p>
+            </ul>
+            {% else %}
+            <p>No SciBERT articles found matching your search criteria.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function addKeywordsToInterests(filename, username, model) {
+            const data = { username: username, filename: filename, model: model };
+            fetch('/add-interests/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function ejectKeywordsToInterests(filename, username, model) {
+            const data = { username: username, filename: filename, model: model };
+            fetch('/eject-interests/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+
+</html>

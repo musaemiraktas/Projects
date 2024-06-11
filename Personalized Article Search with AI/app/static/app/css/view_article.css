@@ -1,0 +1,84 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    padding: 20px;
+    background-image: url('../img/robots2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.wrapper {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 17px 30px 15px 40px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header .logo {
+    width: 159px; /* İstediğiniz genişliği belirleyin */
+    height: auto;
+}
+
+.profile-btn-container form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-btn.no-style-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 3rem;
+    color: #8D00A4;
+    padding: 0;
+}
+
+.profile-btn.no-style-btn:hover {
+    background: none;
+    color: #8D00A4;
+}
+
+.wrapper2 {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 17px 30px 15px 40px;
+}
+
+.wrapper2 h1{
+    margin-bottom: 17px;
+    color: #8D00A4;
+    text-align: center;
+}
+
+.wrapper2 .summary {
+    margin-bottom: 15px;
+}
+
+.wrapper2 h2 {
+    margin-bottom: 10px;
+    color: #8D00A4;
+}
+
+.wrapper2 ul li {
+    margin-left: 15px;
+}

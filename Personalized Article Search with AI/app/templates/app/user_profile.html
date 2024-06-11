@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app/css/user_profile.css' %}">
+    <title>Profile</title>
+</head>
+
+<body>
+    <div class="header-big">
+        <div class="header">
+            <img src="{% static 'app/img/logo2.png' %}" alt="logo" class="logo">
+        </div>
+    </div>
+    
+    <div class="bigger">
+        <form method="post" action="{% url 'user_profile' %}" class="wrapper2">
+            {% csrf_token %}
+            <label for="username" class="lbl">Username:</label>
+            <div class="input-box">
+                <input type="text" id="username" name="username" value="{{ user.username }}" readonly class="username"><br>
+            </div>
+            
+    
+            <label for="first_name" class="lbl">First Name:</label>
+            <div class="input-box">
+                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" class="first_name"><br>
+            </div>
+            
+    
+            <label for="last_name" class="lbl">Last Name:</label>
+            <div class="input-box">
+                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" class="last_name"><br>
+            </div>
+            
+    
+            <label for="birth_date" class="lbl">Birth Date:</label>
+            <div class="input-box">
+                <input type="date" id="birth_date" name="birth_date" value="{{ user.birth_date }}" class="birth_date"><br>
+            </div>
+            
+    
+            <label for="birth_place" class="lbl">Birth Place:</label>
+            <div class="input-box">
+                <input type="text" id="birth_place" name="birth_place" value="{{ user.birth_place }}" class="birth_place"><br>
+            </div>
+            
+    
+            <label for="gender" class="lbl">Gender:</label><br>
+            <div class="gender-group">
+                <input type="radio" id="male" name="gender" value="Male" {% if user.gender == 'Male' %}checked{% endif %}>
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female" {% if user.gender == 'Female' %}checked{% endif %}>
+                <label for="female">Female</label>
+                <input type="radio" id="other" name="gender" value="Other" {% if user.gender == 'Other' %}checked{% endif %}>
+                <label for="other">Other</label>
+            </div><br>
+    
+            <label for="interests" class="lbl">Interests (comma separated):</label><br>
+            <div class="input-box">
+                <textarea id="interests" name="interests" rows="5" cols="40">{{ user.interests }}</textarea><br>
+            </div>
+            
+    
+            <h2>Change Password</h2>
+            <label for="current_password" class="psw">Current Password:</label>
+            <input type="password" id="current_password" name="current_password"><br>
+    
+            <label for="new_password" class="psw">New Password:</label>
+            <input type="password" id="new_password" name="new_password"><br>
+    
+            <label for="confirm_new_password" class="psw">Confirm New Password:</label>
+            <input type="password" id="confirm_new_password" name="confirm_new_password"><br>
+            <div class="btn">
+                <button type="submit">Update</button>
+            </div>
+            
+        </form>
+    </div>
+    
+</body>
+
+</html>
