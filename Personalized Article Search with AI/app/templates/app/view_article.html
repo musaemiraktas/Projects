@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'app/css/view_article.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="header">
+            <img src="{% static 'app/img/logo2.png' %}" alt="logo" class="logo">
+            <div class="profile-btn-container">
+                <form action="{% url 'user_profile' %}" method="get">
+                    <input type="hidden" name="username" value="{{ username }}">
+                    <button type="submit" class="profile-btn no-style-btn"><i class='bx bxs-user-circle'></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper2">
+        <h1>{{ title }}</h1>
+        <h2>Abstract</h2>
+        <p class="summary">{{ summary }}</p>
+        <h2>Keywords</h2>
+        <ul>
+            {% for keyword in keywords %}
+            <li>{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+
+</html>

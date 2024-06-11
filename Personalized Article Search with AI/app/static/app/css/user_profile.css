@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    padding: 20px;
+    background-image: url('../img/robots2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff; /* Yazı rengini beyaz yaparak kontrastı artırın */
+}
+
+.header-big {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 17px 30px 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header .logo {
+    width: 159px; /* İstediğiniz genişliği belirleyin */
+    height: auto;
+}
+
+.bigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper2 {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 17px 30px 15px 40px;
+    color: #fff; /* Yazı rengini beyaz yaparak kontrastı artırın */
+}
+
+
+
+.input-box {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.lbl {
+    color: #8D00A4;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="password"],
+textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    resize: none;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+/* Change Password kısmındaki input alanlarına kenarlık ekliyoruz */
+input[type="password"] {
+    border: 2px solid rgba(255, 255, 255, .2); /* Kenarlık ekleme */
+    border-radius: 40px; /* Kenarları yuvarlama */
+}
+
+.gender-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.gender-group input[type="radio"] {
+    margin-right: 5px;
+}
+
+.psw {
+    margin-bottom: 15px;
+    color: #8D00A4;
+}
+
+div .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, .2);
+    background: #fff;
+    color: #8D00A4;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #8D00A4;
+    color: #fff;
+}

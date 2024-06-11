@@ -1,0 +1,190 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    /*background-color: #db9cf0;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../img/robots2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.wrapper {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    width: 420px;
+    color: #fff;
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    align-items: center;
+    padding: 17px 30px 15px 40px;
+}
+
+.inputs {
+    position: relative;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.inputs input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px ;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #8D00A4;
+}
+
+.logo img {
+    width: 175px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wrapper h3 {
+    font-size: 30px;
+    text-align: center;
+    color: #8D00A4;
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 15px 0;
+}
+
+.gender-form fieldset{
+    border: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    padding-left: 10px;
+    border-radius: 40px;
+    padding-top: 3px;
+    padding-bottom: 9px;
+}
+
+.gender-form label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 45px; /* İsteğe bağlı, aralarındaki boşluğu ayarlar */
+    color: #fff; /* Yazı rengi */
+    padding-left: 5px;
+}
+.gender-form input[type="radio"] {
+    vertical-align: middle;
+
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+/*.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px ;
+}*/
+
+.date{
+    color: #fff;
+}
+
+.input-box input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+    width: 100%;
+}
+
+.custom-date-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.input-box input::placeholder {
+    color: #fff;
+}
+
+.input-box textarea {
+    width: 100%; 
+    height: 90px; 
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 25px;
+    font-size: 15px;
+    color: #fff;
+    padding: 20px 20px 20px 20px; 
+    resize: none;
+    overflow: hidden;
+}
+
+.input-box textarea::placeholder {
+    color: #fff;
+    font-size: 16px;
+}
+
+.btn {
+    text-align: center;
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #8D00A4;
+    font-weight: 600;
+    margin-top: 30px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #8D00A4;
+    color: #fff;
+}
