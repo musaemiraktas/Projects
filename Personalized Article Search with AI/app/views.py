@@ -19,7 +19,7 @@ tokenizer = AutoTokenizer.from_pretrained('allenai/scibert_scivocab_uncased')
 scibert_model = AutoModel.from_pretrained('allenai/scibert_scivocab_uncased')
 
 def get_mongo_collection():
-    client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+    client = MongoClient('.')
     db = client['yazlab3']
     return db['users']
 
@@ -88,7 +88,7 @@ def search_for_articles(query, directory, username):
         fasttext_results = {}
         scibert_results = {}
         
-        client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+        client = MongoClient('.')
         db = client['yazlab3']
         fasttext_collection = db['article_vectors']
         scibert_collection = db['scibert_article_vectors']
@@ -186,7 +186,7 @@ def home(request):
 
     
 def get_recommended_articles(user_vector, model_type):
-    client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+    client = MongoClient('.')
     db = client['yazlab3']
     
     if model_type == 'fasttext':
@@ -382,7 +382,7 @@ def get_user_vector_scibert(interests):
 
 def add_interests(username, new_interests):
     """Kullanıcının ilgi alanları listesine yeni kelimeler ekler."""
-    client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+    client = MongoClient('.')
     db = client['yazlab3']
     users_collection = db['users']
     user = users_collection.find_one({'username': username})
@@ -410,7 +410,7 @@ def add_keywords_to_interests(request):
             with open(key_path, 'r', encoding='utf-8') as file:
                 keywords = file.read().strip().split('\n')
 
-            client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+            client = MongoClient('.')
             db = client['yazlab3']
 
             # MongoDB koleksiyonunu al ve ilgi alanlarını güncelle
@@ -455,7 +455,7 @@ def eject_keywords_to_interests(request):
             with open(key_path, 'r', encoding='utf-8') as file:
                 keywords = file.read().strip().split('\n')
 
-            client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+            client = MongoClient('.')
             db = client['yazlab3']
 
             # MongoDB koleksiyonunu al ve ilgi alanlarını güncelle
@@ -491,7 +491,7 @@ def calculate_precision(tp, fp):
 
 @csrf_exempt
 def user_profile(request):
-    client = MongoClient('mongodb+srv://aktasmusaemir:denemesifre@emiraktas.jikcnjp.mongodb.net/')
+    client = MongoClient('.')
     db = client['yazlab3']
     users_collection = db['users']
 
