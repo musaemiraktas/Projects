@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasta Randevu ve Raporlar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/4.jpg' %}");
+            background-size: cover;
+            background-position:center;
+            background-repeat: no-repeat;
+            background-color: #f4f4f9;
+            padding: 20px;
+            margin: 0;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #fff7f7;
+            margin: 20px;
+            font-weight: bold
+        }
+        p {
+            color: #393838;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: inline-block;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            font-weight: bold
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 80%;
+            margin: 20px auto;
+        }
+        li {
+            background-color: white;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        a {
+            text-decoration: none;
+            color: #0056b3;
+        }
+        a:hover {
+            color: #004494;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hasta Detayları</h1>
+    <h2>{{ hasta.ad }} {{ hasta.soyad }}</h2>
+    <p>Doğum Tarihi: {{ hasta.dogum_tarihi }}</p>
+    <p>Cinsiyet: {{ hasta.cinsiyet }}</p>
+    <p>Telefon: {{ hasta.telefon }}</p>
+    <p>Adres: {{ hasta.adres }}</p>
+    <p>Şifre: {{ hasta.sifre }}</p>
+
+    <h2>Randevular</h2>
+    <ul>
+        {% for randevu in randevular %}
+        <li>{{ randevu.randevu_tarihi }} - {{ randevu.randevu_saati }} - {{ randevu.doktor.ad }} {{ randevu.doktor.soyad }} - {{ randevu.doktor.uzmanlik_alani }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Raporlar</h2>
+    <ul>
+        {% for rapor in raporlar %}
+        <li><a href="{% url 'rapor_detay' rapor.rapor_id %}">{{ rapor.rapor_tarihi }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <button id="raporEkleButton">Rapor Ekle</button>
+
+    <script type="text/javascript">
+        document.getElementById("raporEkleButton").onclick = function() {
+            var hastaId = "{{ hasta.hasta_id }}";
+            var url = "{% url 'yonetici_rapor_ekle' 0 %}".replace('0', hastaId);
+            window.location.href = url;
+        };
+    </script>
+</body>
+</html>

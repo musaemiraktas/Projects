@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hasta Randevuları ve Raporları</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/doktor1.jpg' %}");
+            background-size: cover; /* Resmi tüm arka planı kaplayacak şekilde ayarlar */
+            background-position: center; /* Resmi merkeze alır */
+            background-repeat: no-repeat; /* Resmin tekrarlanmasını engeller */
+            background-attachment: fixed; /* Arka planı kaydırma sırasında sabit tutar */
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 300px;
+            margin: auto;
+        }
+        li {
+            background: white;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #0056b3;
+        }
+        a:hover {
+            color: #004494;
+        }
+        button {
+            padding: 6px 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 10px auto;
+            width: 180px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #hastaProfili {
+            background: #ffffff;
+            padding: 10px;
+            margin: 20px auto;
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ hasta.ad }} {{ hasta.soyad }}'ın Randevuları ve Raporları</h1>
+    
+    <h2>Randevular</h2>
+    <ul>
+        {% for randevu in randevular %}
+        <li>{{ randevu.randevu_tarihi }} - {{ randevu.randevu_saati }} - {{ randevu.ad }} {{ randevu.soyad }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Raporlar</h2>
+    <ul>
+        {% for rapor in raporlar %}
+        <li>
+            <a href="{% url 'rapor_detay' rapor.rapor_id %}">
+                {{ rapor.rapor_tarihi }} - {{ rapor.rapor_icerigi }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <button id="raporEkleButton">Rapor Ekle</button>
+    <button id="profilGoruntuleButton">Hasta Profilini Görüntüle</button>
+    <div id="hastaProfili">
+        <h2>Hasta Profili</h2>
+        <p>Ad: {{ hasta.ad }}</p>
+        <p>Soyad: {{ hasta.soyad }}</p>
+        <p>Doğum Tarihi: {{ hasta.dogum_tarihi }}</p>
+        <p>Cinsiyet: {{ hasta.cinsiyet }}</p>
+        <p>Telefon: {{ hasta.telefon }}</p>
+        <p>Adres: {{ hasta.adres }}</p>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('raporEkleButton').onclick = function() {
+            window.location.href = "{% url 'doktor_rapor_ekle' hasta.hasta_id %}";
+        };
+
+        document.getElementById('profilGoruntuleButton').onclick = function() {
+            var profilDiv = document.getElementById('hastaProfili');
+            profilDiv.style.display = profilDiv.style.display === 'none' ? 'block' : 'none';
+        };
+    </script>
+</body>
+</html>

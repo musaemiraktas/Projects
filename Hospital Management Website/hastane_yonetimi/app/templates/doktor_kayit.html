@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doktor Kaydı</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/doktor1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+        form {
+            background-color: rgba(128, 115, 115, 0.5); /* Yarı şeffaf beyaz arka plan */
+            padding: 20px;
+            background:transparent;
+            border: 2px solid rgba(175, 164, 164, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+            font-size: 16px;
+            text-align: left;
+            color: #000; /* Etiket metinlerini okunabilir kılar */
+        }
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #aaa2a2;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding does not affect width */
+            background-color: transparent; /* Giriş alanlarını şeffaf yapar */
+        }
+        button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #005f6a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doktor Kayıt Formu</h1>
+    <form action="{% url 'doktor_kayit' %}" method="post">
+        {% csrf_token %}
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" required>
+        
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad" required>
+        
+        <label for="uzmanlik_alani">Uzmanlık Alanı:</label>
+        <select id="uzmanlik_alani" name="uzmanlik_alani" required>
+            <option value="">Lütfen bir alan seçiniz...</option>
+            <option value="Dermatoloji">Dermatoloji</option>
+            <option value="Göğüs Hastalıkları">Göğüs Hastalıkları</option>
+            <option value="İç Hastalıkları">İç Hastalıkları</option>
+            <option value="Kardiyoloji">Kardiyoloji</option>
+            <option value="Nöroloji">Nöroloji</option>
+            <option value="Psikiyatri">Psikiyatri</option>
+            <option value="Genel Cerrahi">Genel Cerrahi</option>
+            <option value="Kulak Burun Boğaz">Kulak Burun Boğaz</option>
+            <option value="Kadın Hastalıkları ve Doğum">Kadın Hastalıkları ve Doğum</option>
+            <option value="Üroloji">Üroloji</option>
+        </select>
+
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" pattern="\+?1?\d{9,15}" required>
+
+        <label for="adres">Adres:</label>
+        <textarea id="adres" name="adres" required></textarea>
+
+        <label for="calistigi_hastane">Çalıştığı Hastane:</label>
+        <input type="text" id="calistigi_hastane" name="calistigi_hastane" required>
+        
+        <label for="sifre">Şifre:</label>
+        <input type="password" id="sifre" name="sifre" required>
+        
+        <button type="submit">Kaydet</button>
+    </form>
+</body>
+</html>

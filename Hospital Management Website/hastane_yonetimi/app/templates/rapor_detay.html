@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapor Detayı</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            background-image: url("{% static 'app/img/1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #333;
+            margin: 20px;
+        }
+        img {
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        p {
+            color: #666;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: auto;
+            max-width: 80%;
+            margin: 20px auto;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rapor Detayı</h1>
+    <h2>{{ rapor.icerik }}</h2>
+    {% if rapor.resim_url %}
+        <img src="{{ rapor.resim_url }}" alt="Rapor Resmi">
+    {% else %}
+        <p>Görüntü yok.</p>
+    {% endif %}
+    <p>Rapor Tarihi: {{ rapor.rapor_tarihi }}</p>
+    {% if rapor.resim_url %}
+        <a href="{% url 'rapor_indir' rapor.rapor_id %}">
+            <button>İndir</button>
+        </a>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,63 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doktor Detayları</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/4.jpg' %}");
+            background-size: cover;
+            background-position:center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            color: #e6dddd;
+            margin: 20px;
+        }
+        p {
+            color: #4b4848;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds subtle shadow to the text */
+            width: auto;
+            max-width: 80%; /* Ensures the text blocks are not too wide */
+            margin: 10px auto; /* Centers and spaces out the text blocks */
+            font-weight: bold
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        a:hover {
+            color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doktor Detayları</h1>
+    <p><strong>Ad:</strong> {{ doktor.ad }}</p>
+    <p><strong>Soyad:</strong> {{ doktor.soyad }}</p>
+    <p><strong>Uzmanlık Alanı:</strong> {{ doktor.uzmanlik_alani }}</p>
+    <p><strong>Telefon:</strong> {{ doktor.telefon }}</p>
+    <p><strong>Adres:</strong> {{ doktor.adres }}</p>
+    <p><strong>Çalıştığı Hastane:</strong> {{ doktor.calistigi_hastane }}</p>
+    <p><strong>Şifre:</strong> {{ doktor.sifre }}</p>
+    
+    <a href="{% url 'yonetici_sayfasi' %}">Geri</a>
+</body>
+</html>
