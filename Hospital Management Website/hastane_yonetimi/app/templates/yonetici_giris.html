@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Girişi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/4.jpg' %}"); /* Yönetici temalı arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+        form {
+            /* Yarı şeffaf beyaz arka plan */
+            background:transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px; /* Form genişliği */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #413d3d;
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+            font-size: 16px;
+            text-align: left;
+            color: #000; /* Etiket metinlerini okunabilir kılar */
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            background-color: transparent;
+            border: 1px solid #aa9e9e;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding does not affect width */
+        }
+        button {
+            background-color: #008cba;
+            color: rgb(247, 236, 236);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #005f6a;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin-top: 20px;
+        }
+        li {
+            background-color: #ff2807; /* Uyarı mesajları için arka plan */
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form action="{% url 'yonetici_giris' %}" method="post">
+        <h1>Yönetici Girişi</h1>
+
+        {% csrf_token %}
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" required>
+
+        <label for="sifre">Şifre:</label>
+        <input type="password" id="sifre" name="sifre" required>
+        
+        <button type="submit">Giriş Yap</button>
+    </form>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>

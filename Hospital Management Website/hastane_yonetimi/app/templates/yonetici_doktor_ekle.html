@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Doktor Ekle</title>
+    <style>
+         body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/4.jpg' %}"); /* Yönetici temalı arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+        }       
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+        }
+        form {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 20px;
+            background:transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            border-radius: 10px;
+            width: 90%; /* Responsive width */
+            max-width: 500px; /* Maximum width */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+        }
+        h1 {
+            color: #f2ebeb;
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 10px;
+            display: block;
+            text-align: left;
+            font-size: 16px;
+            color: #f3e6e6;
+            font-weight: bold
+
+        }
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #2a2727;
+            border-radius: 4px;
+            background:transparent;
+            box-sizing: border-box;
+
+        }
+        button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        a {
+            color: #0056b3;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        a:hover {
+            color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <h1>Yeni Doktor Ekle</h1>
+    <form action="{% url 'yonetici_doktor_ekle' %}" method="post">
+        {% csrf_token %}
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" required>
+        
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad" required>
+        
+        <label for="uzmanlik_alani">Uzmanlık Alanı:</label>
+        <select id="uzmanlik_alani" name="uzmanlik_alani" required>
+            <option value="">Seçiniz...</option>
+            <option value="Dermatoloji">Dermatoloji</option>
+            <option value="Göğüs Hastalıkları">Göğüs Hastalıkları</option>
+            <option value="İç Hastalıkları">İç Hastalıkları</option>
+            <option value="Kardiyoloji">Kardiyoloji</option>
+            <option value="Nöroloji">Nöroloji</option>
+            <option value="Psikiyatri">Psikiyatri</option>
+            <option value="Genel Cerrahi">Genel Cerrahi</option>
+            <option value="Kulak Burun Boğaz">Kulak Burun Boğaz</option>
+            <option value="Kadın Hastalıkları ve Doğum">Kadın Hastalıkları ve Doğum</option>
+            <option value="Üroloji">Üroloji</option>
+        </select>
+        
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" pattern="\+?1?\d{9,15}" required>
+        
+        <label for="adres">Adres:</label>
+        <textarea id="adres" name="adres" required></textarea>
+        
+        <label for="calistigi_hastane">Çalıştığı Hastane:</label>
+        <input type="text" id="calistigi_hastane" name="calistigi_hastane" required>
+        
+        <label for="sifre">Şifre:</label>
+        <input type="password" id="sifre" name="sifre" required>
+        
+        <button type="submit">Kaydet</button>
+    </form>
+    <a href="{% url 'yonetici_sayfasi' %}">Geri</a>
+</body>
+</html>

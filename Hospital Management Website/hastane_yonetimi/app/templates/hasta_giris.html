@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasta Girişi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/5.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 350px;
+            background: white;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2e2424;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #958e8e;
+            background-color: transparent;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: 1px solid #cccccc;
+        }
+        button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #007ba7;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        li {
+            background: #ff2807;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hasta Girişi</h1>
+        <form action="{% url 'hasta_giris' %}" method="post">
+            {% csrf_token %}
+            <label for="telefon">Telefon:</label>
+            <input type="text" id="telefon" name="telefon" required>
+
+            <label for="sifre">Şifre:</label>
+            <input type="password" id="sifre" name="sifre" required>
+            
+            <button type="submit">Giriş Yap</button>
+        </form>
+        <button id="hastaKayitButton">Kayıt Ol</button>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <script type="text/javascript">
+            document.getElementById("hastaKayitButton").onclick = function() {
+                window.location.href = "{% url 'hasta_kayit' %}";
+            };
+        </script>
+    </div>
+</body>
+</html>

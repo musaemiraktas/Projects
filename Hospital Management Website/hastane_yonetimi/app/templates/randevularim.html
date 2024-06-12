@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevularım</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/5.jpg' %}"); /* Tıbbi bir arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+            color: #333; /* Metin rengi */
+        }
+        h1 {
+            margin: 20px 0;
+            color: #484242; /* Başlık rengi beyaz yapıldı */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 80%; /* Liste genişliği */
+            background-color: rgba(255, 255, 255, 0.8); /* Yarı şeffaf beyaz arka plan */
+            background:transparent;
+            backdrop-filter: blur(13px);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin-top: 20px;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* Her liste elemanı arasında bir çizgi */
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        li:last-child {
+            border-bottom: none; /* Son liste elemanının alt çizgisini kaldır */
+        }
+    </style>
+</head>
+<body>
+    <h1>Randevularım</h1>
+    <ul>
+        {% for randevu in randevular %}
+        <li>
+            {{ randevu.randevu_tarihi }} - {{ randevu.randevu_saati }} -
+            {{ randevu.ad }} {{ randevu.soyad }} - {{randevu.uzmanlik_alani }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

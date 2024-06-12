@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasta Kaydı</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/5.jpg' %}"); /* Varsayılan hasta arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+        form {
+            background-color: rgba(255, 255, 255, 0.5); /* Yarı şeffaf beyaz arka plan */
+            padding: 20px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+            font-size: 16px;
+            text-align: left;
+            color: #000; /* Etiket metinlerini okunabilir kılar */
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #958e8e;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding does not affect width */
+            background-color: transparent; /* Giriş alanlarını şeffaf yapar */
+        }
+        button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #005f6a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hasta Kayıt Formu</h1>
+    <form action="{% url 'hasta_kayit' %}" method="post">
+        {% csrf_token %}
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" required>
+        
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad" required>
+        
+        <label for="dogum_tarihi">Doğum Tarihi:</label>
+        <input type="date" id="dogum_tarihi" name="dogum_tarihi" required>
+        
+        <label for="cinsiyet">Cinsiyet:</label>
+        <select id="cinsiyet" name="cinsiyet">
+            <option value="Erkek">Erkek</option>
+            <option value="Kadın">Kadın</option>
+            <option value="Diğer">Diğer</option>
+        </select>
+        
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" pattern="\+?1?\d{9,15}" required>
+        
+        <label for="adres">Adres:</label>
+        <textarea id="adres" name="adres" required></textarea>
+        
+        <label for="sifre">Şifre:</label>
+        <input type="password" id="sifre" name="sifre" required>
+        
+        <button type="submit">Kaydet</button>
+    </form>
+</body>
+</html>

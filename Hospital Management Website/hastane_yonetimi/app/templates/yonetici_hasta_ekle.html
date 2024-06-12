@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yeni Hasta Ekle</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/4.jpg' %}"); /* Yönetici temalı arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+        }
+        form {
+            padding: 20px;
+            background:transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            border-radius: 10px;
+            width: 90%; /* Responsive width */
+            max-width: 500px; /* Maximum width */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            font-weight: bold
+        }
+        h1 {
+            color: #f2ebeb;
+            margin-bottom: 20px;
+            font-weight: bold
+        }
+        label {
+            margin-bottom: 10px;
+            display: block;
+            text-align: left;
+            font-size: 16px;
+            color: #f3e6e6;
+            font-weight: bold
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background:transparent;
+            border: 1px solid #302b2b;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-weight: bold
+        }
+        button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        a {
+            color: #0056b3;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        a:hover {
+            color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <form action="{% url 'yonetici_hasta_ekle' %}" method="post">
+        {% csrf_token %}
+        <h1>Yeni Hasta Ekle</h1>
+
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" required>
+        
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad" required>
+        
+        <label for="dogum_tarihi">Doğum Tarihi:</label>
+        <input type="date" id="dogum_tarihi" name="dogum_tarihi" required>
+        
+        <label for="cinsiyet">Cinsiyet:</label>
+        <select id="cinsiyet" name="cinsiyet">
+            <option value="Erkek">Erkek</option>
+            <option value="Kadın">Kadın</option>
+            <option value="Diğer">Diğer</option>
+        </select>
+        
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" pattern="\+?1?\d{9,15}" required>
+        
+        <label for="adres">Adres:</label>
+        <textarea id="adres" name="adres" required></textarea>
+        
+        <label for="sifre">Şifre:</label>
+        <input type="password" id="sifre" name="sifre" required>
+        
+        <button type="submit">Kaydet</button>
+    </form>
+    <a href="{% url 'yonetici_sayfasi' %}">Geri</a>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raporlarım</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/5.jpg' %}"); /* Tıbbi bir arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px; /* Sayfa kenar boşlukları */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* İçerikleri ortalar */
+            min-height: 100vh; /* Sayfanın tam yükseklikte olmasını sağlar */
+            text-align: center;
+            color: #333; /* Metin rengi */
+        }
+        h1 {
+            margin: 20px 0;
+            color: #464141; /* Başlık rengi beyaz yapıldı */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 80%; /* Liste genişliği */
+            background-color: rgba(255, 255, 255, 0.8); /* Yarı şeffaf beyaz arka plan */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin-top: 20px;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* Her liste elemanı arasında bir çizgi */
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        li:last-child {
+            border-bottom: none; /* Son liste elemanının alt çizgisini kaldır */
+        }
+        a {
+            text-decoration: none;
+            color: #0056b3;
+            display: block;
+        }
+        a:hover {
+            color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <h1>Raporlarım</h1>
+    <ul>
+        {% for rapor in raporlar %}
+            <li>
+                <a href="{% url 'rapor_detay' rapor.rapor_id %}">{{ rapor.rapor_icerigi }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

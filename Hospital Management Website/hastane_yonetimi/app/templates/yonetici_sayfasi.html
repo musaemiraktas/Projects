@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Sayfası</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/4.jpg' %}"); /* Tıbbi bir arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px; /* Sayfa kenar boşlukları */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* İçerikleri ortalar */
+            min-height: 100vh; /* Sayfanın tam yükseklikte olmasını sağlar */
+            text-align: center;
+            color: #333; /* Metin rengi */
+        }
+        h1, h2 {
+            color: #f7f0f0;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            width: 80%;
+        }
+        li {
+            background-color: white;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        a {
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #004494;
+        }
+        button {
+            padding: 6px 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        form {
+            background:transparent;
+            border: 2px solid rgba(175, 164, 164, 0.2);
+            backdrop-filter: blur(20px);
+            display: inline;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Sayfası</title>
+</head>
+<body>
+    <h1>Hoşgeldiniz {{ yonetici.ad }} {{ yonetici.soyad }}!</h1>
+    
+    <h2>Hastalar</h2>
+    <ul>
+        {% for hasta in hastalar %}
+        <li>
+            <a href="{% url 'yonetici_hasta_detay' hasta.hasta_id %}">
+                {{ hasta.ad }} {{ hasta.soyad }}
+            </a>
+            <div>
+                <button onclick="ekleRapor('{{ hasta.hasta_id }}')">Rapor Ekle</button>
+                <form action="{% url 'hasta_sil' hasta.hasta_id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Sil</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Doktorlar</h2>
+    <ul>
+        {% for doktor in doktorlar %}
+        <li>
+            <a href="{% url 'doktor_detay' doktor.doktor_id %}">
+                {{ doktor.ad }} {{ doktor.soyad }}
+            </a>
+            <form action="{% url 'doktor_sil' doktor.doktor_id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Sil</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Yeni Kişi Ekle</h2>
+    <a href="{% url 'yonetici_hasta_ekle' %}">Yeni Hasta Ekle</a>
+    <a href="{% url 'yonetici_doktor_ekle' %}">Yeni Doktor Ekle</a>
+
+    <h2>Rastgele 5 Hasta ve Doktor Ekle</h2>
+    <form action="{% url 'yonetici_sayfasi' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" name="ekle_hasta_doktor">Rastgele 5 Hasta ve Doktor Ekle</button>
+    </form>
+
+    <script type="text/javascript">
+        function ekleRapor(hastaId) {
+            var url = "{% url 'yonetici_rapor_ekle' 0 %}".replace('0', hastaId);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
+
+</html>
+

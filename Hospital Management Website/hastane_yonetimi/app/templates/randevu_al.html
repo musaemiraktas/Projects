@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevu Al</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'app/img/5.jpg' %}"); /* Klinik temalı arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+        form {
+            background: transparent;
+            border: 2px solid rgba(108, 97, 97, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px; /* Form genişliği */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+            font-size: 16px;
+            text-align: left;
+            color: #000; /* Etiket metinlerini okunabilir kılar */
+        }
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            background: transparent;
+            border: 2px solid rgba(51, 47, 47, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding does not affect width */
+        }
+        button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #005f6a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Randevu Al</h1>
+    <form action="{% url 'randevu_al' %}" method="POST">
+        {% csrf_token %}
+        <label for="randevu_tarihi">Randevu Tarihi:</label>
+        <input type="date" id="randevu_tarihi" name="randevu_tarihi" required>
+
+        <label for="randevu_saati">Randevu Saati:</label>
+        <input type="time" id="randevu_saati" name="randevu_saati" required>
+
+        <label for="uzmanlik_alani">Bölüm:</label>
+        <select id="uzmanlik_alani" name="uzmanlik_alani" required>
+            <option value="">Bölüm Seçin</option>
+            {% for uzmanlik in uzmanlik_alanlari %}
+            <option value="{{ uzmanlik.0 }}">{{ uzmanlik.1 }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="doktor_id">Doktor:</label>
+        <select id="doktor_id" name="doktor_id" required>
+            <option value="">Önce Bölüm Seçin</option>
+        </select>
+
+        <button type="submit">Randevu Al</button>
+    </form>
+
+    <script type="text/javascript">
+        document.getElementById("uzmanlik_alani").onchange = function() {
+            var uzmanlikAlani = this.value;
+            var doktorSelect = document.getElementById("doktor_id");
+
+            // Doktorları temizle
+            doktorSelect.innerHTML = '<option value="">Doktor Seçin</option>';
+
+            if (uzmanlikAlani) {
+                fetch(`/doktorlari_getir/?uzmanlik_alani=${uzmanlikAlani}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(function(doktor) {
+                            var option = document.createElement("option");
+                            option.value = doktor.doktor_id;
+                            option.text = doktor.ad + " " + doktor.soyad;
+                            doktorSelect.appendChild(option);
+                        });
+                    });
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapor Ekle</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            background-image: url("{% static 'app/img/1.jpg' %}");
+            background-size: cover; /* Resmi tüm arka planı kaplayacak şekilde ayarlar */
+            background-position: center; /* Resmi merkeze alır */
+            background-repeat: no-repeat; /* Resmin tekrarlanmasını engeller */
+            background-attachment: fixed; /* Arka planı kaydırma sırasında sabit tutar */
+            padding: 20px;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #524c4c;
+            background: transparent;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Rapor Ekle</h1>
+    <form id="raporEkleForm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="button" onclick="submitForm()">Gönder</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            const form = document.getElementById('raporEkleForm');
+            const formData = new FormData(form);
+
+            axios.post("{% url 'rapor_ekle' %}", formData, {
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => {
+                if (response.data.success) {
+                    alert('Rapor başarıyla eklendi.');
+                    // Formu temizle
+                    form.reset();
+                } else {
+                    alert('Rapor eklenirken hata oluştu: ' + response.data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Rapor ekleme sırasında hata oluştu:', error);
+            });
+        }
+    </script>
+</body>
+</html>
+
