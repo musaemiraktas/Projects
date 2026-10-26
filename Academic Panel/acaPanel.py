@@ -1,3 +1,4 @@
+import os
 from PyQt5.QtWidgets import *
 from acaPanel_python import Ui_Form
 from acaPanelLogged import AcaLoggedPage
@@ -6,7 +7,7 @@ import random
 import string
 
 class AcaLoginPage(QWidget):
-    conn = connect_to_database("postgres", "<DB_PASSWORD>", "localhost", "5432", "yazlab1")
+    conn = connect_to_database("postgres", os.environ.get("DB_PASSWORD", ""), "localhost", "5432", "yazlab1")
 
     cur = conn.cursor()
 

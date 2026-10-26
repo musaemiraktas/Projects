@@ -1,3 +1,4 @@
+import os
 import psycopg2
 import random
 import string
@@ -9,7 +10,7 @@ app = QApplication([])
 conn = psycopg2.connect(
     dbname="yazlab1",
     user="postgres",
-    password="<DB_PASSWORD>",
+    password=os.environ.get("DB_PASSWORD", ""),
     host="localhost",
     port="5432"
 )

@@ -1,0 +1,23 @@
+# Ortam değişkenleri / gizli bilgiler
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+myenv/
+venv/
+.venv/
+db.sqlite3
+
+# Node
+node_modules/
+
+# Yüklenen medya
+media/
+
+# IDE ve derleme çıktıları
+.idea/
+.vscode/
+*.class

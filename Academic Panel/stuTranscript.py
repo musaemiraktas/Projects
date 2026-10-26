@@ -1,3 +1,4 @@
+import os
 from PyQt5.QtWidgets import *
 from stuTranscript_python import Ui_Form
 from database import *
@@ -21,7 +22,7 @@ class StuTranscriptPage(QWidget):
 
 
     def FillTable(self):
-        conn = connect_to_database("postgres", "<DB_PASSWORD>", "localhost", "5432", "yazlab1")
+        conn = connect_to_database("postgres", os.environ.get("DB_PASSWORD", ""), "localhost", "5432", "yazlab1")
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM transcript_info")

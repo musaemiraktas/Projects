@@ -1,3 +1,4 @@
+import os
 from PyQt5.QtWidgets import *
 from stuPanel_python import Ui_Form
 from stuPanelLogged import StuLoggedPage
@@ -6,7 +7,7 @@ from database import connect_to_database, query_database
 
 class StuLoginPage(QWidget):
 
-    conn = connect_to_database("postgres", "<DB_PASSWORD>", "localhost", "5432", "yazlab1")
+    conn = connect_to_database("postgres", os.environ.get("DB_PASSWORD", ""), "localhost", "5432", "yazlab1")
 
     def __init__(self):
         super().__init__()

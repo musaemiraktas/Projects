@@ -1,3 +1,4 @@
+import os
 from PyQt5.QtWidgets import *
 from stuPanelLogged_python import Ui_MainWindow
 from PyQt5.QtCore import pyqtSignal
@@ -9,7 +10,7 @@ from database import *
 
 
 class StuLoggedPage(QMainWindow):
-    conn = connect_to_database("postgres", "<DB_PASSWORD>", "localhost", "5432", "yazlab1")
+    conn = connect_to_database("postgres", os.environ.get("DB_PASSWORD", ""), "localhost", "5432", "yazlab1")
     name_surname_signal = pyqtSignal(str, str)  # İsim ve soyismi iletmek için sinyal
 
     def __init__(self):
@@ -57,7 +58,7 @@ class StuLoggedPage(QMainWindow):
 
     def EnterTranscript(self):
         try:
-            conn = connect_to_database("postgres", "<DB_PASSWORD>", "localhost", "5432", "yazlab1")
+            conn = connect_to_database("postgres", os.environ.get("DB_PASSWORD", ""), "localhost", "5432", "yazlab1")
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM transcript_info")
             rows = cursor.fetchall()
